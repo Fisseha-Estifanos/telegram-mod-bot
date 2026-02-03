@@ -1,10 +1,16 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv
+RUN pip install --no-cache-dir uv
 
-COPY . .
+# Copy project files
+COPY pyproject.toml .
+COPY src/ src/
+COPY scripts/ scripts/
+
+# Install dependencies using uv
+RUN uv pip install --system .
 
 CMD ["python", "-m", "src.main"]
