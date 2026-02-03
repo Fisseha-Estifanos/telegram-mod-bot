@@ -483,9 +483,21 @@ knowledge_registry.register(kb)
 2. Update `MODERATION_CLASSIFIER_PROMPT` in `src/services/llm/prompts.py`
 3. Configure action in `src/config.py`
 
+## Project Origin
+
+This project was developed using AI-assisted development with Claude Code. The original development specifications, instructions, and planning documents used to create this bot are preserved in the [dev/](dev/) folder for reference and transparency.
+
+### Development Files
+
+The [dev/](dev/) folder contains:
+- **CLAUDE_CODE_INSTRUCTIONS.md** - Original instructions and guidelines for the AI-assisted development process
+- **PROJECT_SPEC.md** - Complete project specifications, architecture decisions, and implementation details
+
+These files provide insight into the project's design philosophy, architectural decisions, and development methodology. They can be useful for understanding the rationale behind implementation choices or for extending the project with new features.
+
 ## License
 
-MIT License - See LICENSE file for details
+MIT License - See [LICENSE](LICENSE) file for details
 
 ## Support
 
