@@ -52,7 +52,7 @@ class KnowledgeRegistry:
         return sorted(
             [kb for kb in self._knowledge_bases.values() if kb.is_active],
             key=lambda x: x.priority,
-            reverse=True
+            reverse=True,
         )
 
     def add_item(self, kb_slug: str, item: KnowledgeItem) -> None:
@@ -82,14 +82,16 @@ class KnowledgeRegistry:
         """
         lines = []
         for kb in self.get_all_active():
-            lines.append(f"""
+            lines.append(
+                f"""
 Knowledge Base: {kb.name}
 Slug: {kb.slug}
 Type: {kb.type.value}
 Description: {kb.description}
 Example Questions: {', '.join(kb.example_questions[:3]) if kb.example_questions else 'N/A'}
 Keywords: {', '.join(kb.routing_hints[:5]) if kb.routing_hints else 'N/A'}
-""")
+"""
+            )
         return "\n---\n".join(lines)
 
 
@@ -107,32 +109,73 @@ def setup_default_knowledge_bases():
 
     Called during bot initialization to set up core knowledge bases.
     """
-    knowledge_registry.register(KnowledgeBase(
-        slug="faq",
-        name="Frequently Asked Questions",
-        description="Common questions and answers",
-        type=KnowledgeBaseType.FAQ,
-        routing_hints=["how do i", "what is", "can i", "help", "question", "how to"],
-        example_questions=["How do I get started?", "What are the features?", "How can I contact support?"],
-        priority=10
-    ))
+    knowledge_registry.register(
+        KnowledgeBase(
+            slug="faq",
+            name="Frequently Asked Questions",
+            description="Common questions and answers",
+            type=KnowledgeBaseType.FAQ,
+            routing_hints=[
+                "how do i",
+                "what is",
+                "can i",
+                "help",
+                "question",
+                "how to",
+            ],
+            example_questions=[
+                "How do I get started?",
+                "What are the features?",
+                "How can I contact support?",
+            ],
+            priority=10,
+        )
+    )
 
-    knowledge_registry.register(KnowledgeBase(
-        slug="rules",
-        name="Community Rules",
-        description="Rules, guidelines, and policies",
-        type=KnowledgeBaseType.RULES,
-        routing_hints=["rules", "allowed", "banned", "permitted", "guidelines", "policy", "can i post"],
-        example_questions=["What are the rules?", "Is promotion allowed?", "What gets you banned?"],
-        priority=9
-    ))
+    knowledge_registry.register(
+        KnowledgeBase(
+            slug="rules",
+            name="Community Rules",
+            description="Rules, guidelines, and policies",
+            type=KnowledgeBaseType.RULES,
+            routing_hints=[
+                "rules",
+                "allowed",
+                "banned",
+                "permitted",
+                "guidelines",
+                "policy",
+                "can i post",
+            ],
+            example_questions=[
+                "What are the rules?",
+                "Is promotion allowed?",
+                "What gets you banned?",
+            ],
+            priority=9,
+        )
+    )
 
-    knowledge_registry.register(KnowledgeBase(
-        slug="product",
-        name="Product Information",
-        description="Product features, pricing, and details",
-        type=KnowledgeBaseType.PRODUCT_INFO,
-        routing_hints=["price", "cost", "feature", "product", "plan", "subscription", "pricing"],
-        example_questions=["How much does it cost?", "What's included?", "Is there a free plan?"],
-        priority=8
-    ))
+    knowledge_registry.register(
+        KnowledgeBase(
+            slug="product",
+            name="Product Information",
+            description="Product features, pricing, and details",
+            type=KnowledgeBaseType.PRODUCT_INFO,
+            routing_hints=[
+                "price",
+                "cost",
+                "feature",
+                "product",
+                "plan",
+                "subscription",
+                "pricing",
+            ],
+            example_questions=[
+                "How much does it cost?",
+                "What's included?",
+                "Is there a free plan?",
+            ],
+            priority=8,
+        )
+    )
