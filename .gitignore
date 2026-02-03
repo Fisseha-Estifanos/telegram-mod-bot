@@ -61,3 +61,5 @@ alembic/versions/*.pyc
 
 # Docker
 .dockerignore
+
+.mypycache/

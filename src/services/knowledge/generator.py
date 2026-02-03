@@ -1,4 +1,5 @@
 """RAG response generation."""
+
 import logging
 from typing import List
 from src.services.llm.client import llm_client
@@ -11,7 +12,9 @@ logger = logging.getLogger(__name__)
 class KnowledgeGenerator:
     """Generates answers using RAG."""
 
-    async def generate(self, question: str, contexts: List[RetrievedContext]) -> KnowledgeResponse:
+    async def generate(
+        self, question: str, contexts: List[RetrievedContext]
+    ) -> KnowledgeResponse:
         """Generate answer from contexts."""
 
         if not contexts:
@@ -19,18 +22,20 @@ class KnowledgeGenerator:
                 answer="I couldn't find relevant information to answer your question.",
                 sources=[],
                 confidence=0,
-                knowledge_bases_used=[]
+                knowledge_bases_used=[],
             )
 
         context_text = self._format_contexts(contexts)
 
         try:
-            prompt = RAG_GENERATION_PROMPT.format(context=context_text, question=question)
+            prompt = RAG_GENERATION_PROMPT.format(
+                context=context_text, question=question
+            )
 
             answer = await llm_client.complete(
                 system_prompt="Answer based only on the provided context.",
                 user_message=prompt,
-                max_tokens=500
+                max_tokens=500,
             )
 
             sources = []
@@ -38,16 +43,18 @@ class KnowledgeGenerator:
             for ctx in contexts:
                 kb_used.append(ctx.knowledge_base_slug)
                 for item in ctx.items:
-                    sources.append({
-                        "kb": ctx.knowledge_base_name,
-                        "title": item.title or item.question or "Item"
-                    })
+                    sources.append(
+                        {
+                            "kb": ctx.knowledge_base_name,
+                            "title": item.title or item.question or "Item",
+                        }
+                    )
 
             return KnowledgeResponse(
                 answer=answer,
                 sources=sources[:5],
                 confidence=self._calc_confidence(contexts),
-                knowledge_bases_used=list(set(kb_used))
+                knowledge_bases_used=list(set(kb_used)),
             )
         except Exception as e:
             logger.error(f"Generation error: {e}")
@@ -55,7 +62,7 @@ class KnowledgeGenerator:
                 answer="I encountered an error. Please try again.",
                 sources=[],
                 confidence=0,
-                knowledge_bases_used=[]
+                knowledge_bases_used=[],
             )
 
     def _format_contexts(self, contexts: List[RetrievedContext]) -> str:
